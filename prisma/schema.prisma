@@ -1,0 +1,80 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+    directUrl= env("DIRECT_URL")
+}
+
+enum Role {
+    User
+    Admin
+}
+
+enum MemberShip {
+    Free
+    Prime
+}
+
+model UserProfile {
+    uid   String @id @default(uuid())
+    email String @unique
+    name  String
+    role Role @default(User)
+    memberShip MemberShip @default(Free) @map("member_ship")
+    diaries Diary[]
+    deleteFlag Boolean @default(false) @map("delete_flag")
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")  
+    @@map("users")
+}
+
+model Diary {
+    uid String @id @default(uuid())
+    targetDate String @map("target_date")
+    user UserProfile @relation(fields: [userId], references: [uid])
+    userId String @map("user_id")
+    ja String?
+    en String?
+    corrections Correction[]
+    words Word[]
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")  
+
+    deleteFlag Boolean @default(false) @map("delete_flag")
+    @@unique([targetDate, userId])   
+    @@map("diaries")
+}
+
+
+model Correction {
+    uid String @id @default(uuid())
+    diary Diary @relation(fields: [diaryId], references: [uid])
+    diaryId String @map("diary_id")
+    ja String?
+    en String?
+    resultJa String? @map("result_ja")
+    resultEn String? @map("result_en")
+    commentJa String? @map("comment_ja")
+    commentEn String? @map("comment_en")
+    points String?
+    score Int?
+    deleteFlag Boolean @default(false) @map("delete_flag")
+
+    @@map("corrections")
+}
+
+model Word {
+    uid String @id @default(uuid())
+    diary Diary @relation(fields: [diaryId], references: [uid])
+    diaryId String @map("diary_id")
+    word String
+    mean String
+    deleteFlag Boolean @default(false) @map("delete_flag")
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+    @@map("words")
+}

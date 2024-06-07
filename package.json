@@ -1,27 +1,36 @@
 {
-  "name": "e-ai",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "react": "^18",
-    "react-dom": "^18",
-    "next": "13.5.6"
-  },
-  "devDependencies": {
-    "typescript": "^5",
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "autoprefixer": "^10",
-    "postcss": "^8",
-    "tailwindcss": "^3",
-    "eslint": "^8",
-    "eslint-config-next": "13.5.6"
-  }
+    "name": "e-ai",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "next dev",
+        "generate:types": "export $(cat .env.local | grep -v \"#\" | xargs) &&  supabase gen types typescript --project-id ${SUPABASE_PROJECT_REF} --schema public > src/lib/database.types.ts",
+        "build": "next build",
+        "start": "next start",
+        "lint": "next lint"
+    },
+    "dependencies": {
+        "@hookform/resolvers": "^3.4.2",
+        "@supabase/auth-helpers-nextjs": "^0.10.0",
+        "@supabase/supabase-js": "^2.43.4",
+        "dayjs": "^1.11.11",
+        "next": "^14.2.3",
+        "react": "^18",
+        "react-dom": "^18",
+        "react-hook-form": "^7.51.5",
+        "react-icons": "^5.2.1",
+        "zod": "^3.23.8",
+        "zustand": "^4.5.2"
+    },
+    "devDependencies": {
+        "@types/node": "^20",
+        "@types/react": "^18",
+        "@types/react-dom": "^18",
+        "autoprefixer": "^10",
+        "eslint": "^8",
+        "eslint-config-next": "13.5.6",
+        "postcss": "^8",
+        "tailwindcss": "^3",
+        "typescript": "^5"
+    }
 }
