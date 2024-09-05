@@ -18,9 +18,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     <main className="flex-1 container max-w-screen-3xl  mx-auto px-1 pt-5 max-h-[100%-96px]">
                         {children}
                     </main>
-                    <footer className="py-4 text-sm text-center bg-gray-300 h-20 fixed bottom-0 w-full">
+                    {/* <footer className="py-4 text-sm text-center bg-gray-300 h-20 fixed bottom-0 w-full">
                         Copyright © 2024 All rights reserved | LibeTech
-                    </footer>
+                    </footer> */}
                 </div>
             </body>
         </html>

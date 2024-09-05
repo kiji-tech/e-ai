@@ -66,7 +66,7 @@ export default function DiariesPage({ selectedDate, words, corrections }: Props)
                     corrections={corrections || []}
                 />
             </div>
-            <div className="w-[calc(100%-32px)] m-4 max-h-[calc(100vh-860px)] md:w-[calc(50%-32px)] md:max-h-[calc(100vh-400px)] ">
+            <div className="w-[calc(100%-32px)] m-4 h-[500px] md:w-[calc(50%-32px)] ">
                 {/* チャット */}
                 <Chats
                     corrections={corrections.filter(
