@@ -19,9 +19,11 @@ export async function GET(request: NextRequest) {
             data: { session },
         } = await supabase.auth.getSession();
         const user = session!.user;
-        console.log(user);
-        const appUser = await supabase.from("users").select("*").eq("uid", user.id).maybeSingle();
-        console.log(appUser);
+        const { data: appUser, error: appUserError } = await supabase
+            .from("users")
+            .select("*")
+            .eq("uid", user.id)
+            .maybeSingle();
         if (!appUser) {
             await supabase!.from("users").insert([
                 {
