@@ -24,8 +24,9 @@ export async function GET(request: NextRequest) {
             .select("*")
             .eq("uid", user.id)
             .maybeSingle();
+        console.log({ appUser, appUserError });
         if (!appUser) {
-            await supabase!.from("users").insert([
+            const { error: insertdError } = await supabase!.from("users").insert([
                 {
                     uid: user.id,
                     email: user.email,
@@ -37,6 +38,7 @@ export async function GET(request: NextRequest) {
                     stripe_id: null,
                 },
             ]);
+            console.error(insertdError);
         }
     }
 
