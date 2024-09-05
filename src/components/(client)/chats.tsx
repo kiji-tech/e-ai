@@ -25,7 +25,7 @@ export default function Chats({ corrections }: Props) {
                 {corrections &&
                     corrections.map((c) => {
                         return (
-                            <>
+                            <div key={c.uid}>
                                 <div>
                                     <button
                                         onClick={() => popup(c)}
@@ -46,7 +46,7 @@ export default function Chats({ corrections }: Props) {
                                         {c.comment_en}
                                     </button>
                                 </div>
-                            </>
+                            </div>
                         );
                     })}
             </div>

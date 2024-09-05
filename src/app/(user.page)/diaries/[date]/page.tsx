@@ -14,7 +14,6 @@ type Props = {
 const Page = async (props: Props) => {
     const supabase = getSupabaseClient();
     const { date } = props.params;
-    console.log(date);
     if (!date) {
         console.warn("date is not found");
         redirect(`/diaries/${dayjs().format("YYYY-MM-DD")}`);

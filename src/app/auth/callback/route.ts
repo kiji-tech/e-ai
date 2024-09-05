@@ -3,8 +3,8 @@ import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
-const supabase = createRouteHandlerClient<Database>({ cookies });
 export async function GET(request: NextRequest) {
+    const supabase = createRouteHandlerClient<Database>({ cookies });
     console.log("===================== callback ============================");
     const requestUrl = new URL(request.url);
     // 認証コードの取得

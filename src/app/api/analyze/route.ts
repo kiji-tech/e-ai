@@ -98,10 +98,7 @@ const handler = async (
 ) => {
     const body = await req.json();
     const { target_date, ja, en } = body;
-    console.log({ body });
-
     if (!target_date || !ja || !en) throw new InvalidRequest();
-
     const userContent = `## 日本語
 ${ja}
 
