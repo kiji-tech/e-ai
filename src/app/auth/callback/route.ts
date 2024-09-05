@@ -5,12 +5,13 @@ import { NextRequest, NextResponse } from "next/server";
 
 const supabase = createRouteHandlerClient<Database>({ cookies });
 export async function GET(request: NextRequest) {
-  const requestUrl = new URL(request.url);
-  // 認証コードの取得
-  const code = requestUrl.searchParams.get("code");
-  if (code) {
-    // 認証コードを使ってアクセストークンを取得
-    await supabase.auth.exchangeCodeForSession(code);
-  }
-  return NextResponse.redirect(requestUrl.origin);
+    console.log("===================== callback ============================");
+    const requestUrl = new URL(request.url);
+    // 認証コードの取得
+    const code = requestUrl.searchParams.get("code");
+    if (code) {
+        // 認証コードを使ってアクセストークンを取得
+        await supabase.auth.exchangeCodeForSession(code);
+    }
+    return NextResponse.redirect(requestUrl.origin);
 }

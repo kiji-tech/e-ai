@@ -3,9 +3,6 @@ import SignInPage from "../../../components/(client)/pages/sign.in";
 import { checkSession } from "@/lib/server.side.utili";
 
 const Page = async () => {
-  if (await checkSession()) {
-    redirect("/diaries");
-  }
-  return <SignInPage />;
+    return <SignInPage />;
 };
 export default Page;

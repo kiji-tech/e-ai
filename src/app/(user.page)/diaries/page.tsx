@@ -1,12 +1,7 @@
-import DiariesPage from "@/components/(client)/pages/diaries";
-import { checkSession } from "@/lib/server.side.utili";
+import dayjs from "dayjs";
 import { redirect } from "next/navigation";
 
 const Page = async () => {
-  if (!checkSession()) {
-    redirect("/auth/signin");
-  }
-
-  return <DiariesPage />;
+    redirect(`/diaries/${dayjs().format("YYYY-MM-DD")}`);
 };
 export default Page;

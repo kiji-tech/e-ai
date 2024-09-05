@@ -15,52 +15,55 @@ export type Database = {
           comment_ja: string | null
           created_at: string
           delete_flag: boolean | null
-          diary_id: string
           en: string | null
           ja: string | null
           points: string | null
           result_en: string | null
           result_ja: string | null
           score: number | null
+          target_date: string | null
           uid: string
           updated_at: string | null
+          user_id: string | null
         }
         Insert: {
           comment_en?: string | null
           comment_ja?: string | null
           created_at?: string
           delete_flag?: boolean | null
-          diary_id: string
           en?: string | null
           ja?: string | null
           points?: string | null
           result_en?: string | null
           result_ja?: string | null
           score?: number | null
+          target_date?: string | null
           uid?: string
           updated_at?: string | null
+          user_id?: string | null
         }
         Update: {
           comment_en?: string | null
           comment_ja?: string | null
           created_at?: string
           delete_flag?: boolean | null
-          diary_id?: string
           en?: string | null
           ja?: string | null
           points?: string | null
           result_en?: string | null
           result_ja?: string | null
           score?: number | null
+          target_date?: string | null
           uid?: string
           updated_at?: string | null
+          user_id?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "corrections_diary_id_fkey"
-            columns: ["diary_id"]
+            foreignKeyName: "corrections_user_id_fkey"
+            columns: ["user_id"]
             isOneToOne: false
-            referencedRelation: "diaries"
+            referencedRelation: "users"
             referencedColumns: ["uid"]
           },
         ]
@@ -106,6 +109,91 @@ export type Database = {
           },
         ]
       }
+      subscription_items: {
+        Row: {
+          created_at: string
+          end_at: string | null
+          price_id: string | null
+          quantity: number | null
+          subscription_id: string | null
+          uid: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          end_at?: string | null
+          price_id?: string | null
+          quantity?: number | null
+          subscription_id?: string | null
+          uid: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          end_at?: string | null
+          price_id?: string | null
+          quantity?: number | null
+          subscription_id?: string | null
+          uid?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subscription_items_subscription_id_fkey"
+            columns: ["subscription_id"]
+            isOneToOne: false
+            referencedRelation: "subscriptions"
+            referencedColumns: ["uid"]
+          },
+        ]
+      }
+      subscriptions: {
+        Row: {
+          cancel_at: string | null
+          canceled: boolean | null
+          created_at: string
+          current_period_end: string | null
+          current_period_start: string | null
+          quantity: number | null
+          status: string | null
+          uid: string
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          cancel_at?: string | null
+          canceled?: boolean | null
+          created_at?: string
+          current_period_end?: string | null
+          current_period_start?: string | null
+          quantity?: number | null
+          status?: string | null
+          uid: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          cancel_at?: string | null
+          canceled?: boolean | null
+          created_at?: string
+          current_period_end?: string | null
+          current_period_start?: string | null
+          quantity?: number | null
+          status?: string | null
+          uid?: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subscriptions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["uid"]
+          },
+        ]
+      }
       users: {
         Row: {
           created_at: string
@@ -114,6 +202,7 @@ export type Database = {
           member_ship: Database["public"]["Enums"]["MemberShip"] | null
           name: string | null
           role: Database["public"]["Enums"]["Role"] | null
+          stripe_id: string
           uid: string
           updated_at: string | null
         }
@@ -124,6 +213,7 @@ export type Database = {
           member_ship?: Database["public"]["Enums"]["MemberShip"] | null
           name?: string | null
           role?: Database["public"]["Enums"]["Role"] | null
+          stripe_id: string
           uid?: string
           updated_at?: string | null
         }
@@ -134,6 +224,7 @@ export type Database = {
           member_ship?: Database["public"]["Enums"]["MemberShip"] | null
           name?: string | null
           role?: Database["public"]["Enums"]["Role"] | null
+          stripe_id?: string
           uid?: string
           updated_at?: string | null
         }
@@ -143,36 +234,39 @@ export type Database = {
         Row: {
           created_at: string
           delete_flag: boolean | null
-          diary_id: string
           mean: string | null
+          target_date: string | null
           uid: string
           updated_at: string | null
+          user_id: string | null
           word: string | null
         }
         Insert: {
           created_at?: string
           delete_flag?: boolean | null
-          diary_id: string
           mean?: string | null
+          target_date?: string | null
           uid?: string
           updated_at?: string | null
+          user_id?: string | null
           word?: string | null
         }
         Update: {
           created_at?: string
           delete_flag?: boolean | null
-          diary_id?: string
           mean?: string | null
+          target_date?: string | null
           uid?: string
           updated_at?: string | null
+          user_id?: string | null
           word?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "word_diary_id_fkey"
-            columns: ["diary_id"]
+            foreignKeyName: "word_user_id_fkey"
+            columns: ["user_id"]
             isOneToOne: false
-            referencedRelation: "diaries"
+            referencedRelation: "users"
             referencedColumns: ["uid"]
           },
         ]
@@ -275,3 +369,4 @@ export type Enums<
   : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
     ? PublicSchema["Enums"][PublicEnumNameOrOptions]
     : never
+
