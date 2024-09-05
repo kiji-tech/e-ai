@@ -10,15 +10,17 @@ export async function GET(request: NextRequest) {
     const code = requestUrl.searchParams.get("code");
     if (code) {
         // 認証コードを使ってアクセストークンを取得
-        const { error } = await supabase.auth.exchangeCodeForSession(code);
+        const {
+            data: { user },
+            error,
+        } = await supabase.auth.exchangeCodeForSession(code);
         if (error) {
             console.error(error);
         }
+        if (!user) {
+            throw new Error("user is null");
+        }
         // user情報の取得
-        const {
-            data: { session },
-        } = await supabase.auth.getSession();
-        const user = session!.user;
         const { data: appUser, error: appUserError } = await supabase
             .from("users")
             .select("*")
