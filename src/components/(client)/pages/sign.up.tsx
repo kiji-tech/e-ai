@@ -115,7 +115,10 @@ const SignUpPage = () => {
                     type: "button",
                     disabled: isLoading,
                     onClick: () => {
-                        supabase.auth.signInWithOAuth({ provider: "google" });
+                        supabase.auth.signInWithOAuth({
+                            provider: "google",
+                            options: { redirectTo: process.env.COLLBACK_URL },
+                        });
                     },
                 }}
                 label="Google"
