@@ -117,7 +117,7 @@ const SignUpPage = () => {
                     onClick: () => {
                         supabase.auth.signInWithOAuth({
                             provider: "google",
-                            options: { redirectTo: process.env.COLLBACK_URL },
+                            options: { redirectTo: process.env.NEXT_PUBLIC_CALLBACK_URL },
                         });
                     },
                 }}
