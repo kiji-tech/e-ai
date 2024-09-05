@@ -1,11 +1,10 @@
-import type { Database } from "@/lib/database.types";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
     console.log("===================== callback ============================");
-    const supabase = createRouteHandlerClient<Database>({ cookies });
+    const supabase = createRouteHandlerClient({ cookies });
     const requestUrl = new URL(request.url);
     // 認証コードの取得
     const code = requestUrl.searchParams.get("code");
