@@ -8,9 +8,13 @@ export async function GET(request: NextRequest) {
     const requestUrl = new URL(request.url);
     // 認証コードの取得
     const code = requestUrl.searchParams.get("code");
+    console.log({ code });
     if (code) {
         // 認証コードを使ってアクセストークンを取得
-        await supabase.auth.exchangeCodeForSession(code);
+        const { error } = await supabase.auth.exchangeCodeForSession(code);
+        if (error) {
+            console.error(error);
+        }
     }
     return NextResponse.redirect(requestUrl.origin);
 }
