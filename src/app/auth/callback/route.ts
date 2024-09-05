@@ -4,8 +4,8 @@ import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
-    const supabase = createRouteHandlerClient<Database>({ cookies });
     console.log("===================== callback ============================");
+    const supabase = createRouteHandlerClient<Database>({ cookies });
     const requestUrl = new URL(request.url);
     // 認証コードの取得
     const code = requestUrl.searchParams.get("code");

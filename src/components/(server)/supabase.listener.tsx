@@ -1,7 +1,8 @@
 import Navigation from "../(client)/navigation";
-import { supabase } from "@/lib/server.side.utili";
+import { getSupabaseClient } from "@/lib/server.side.utili";
 
 const SupabaseListener = async () => {
+    const supabase = getSupabaseClient();
     const {
         data: { session },
     } = await supabase.auth.getSession();

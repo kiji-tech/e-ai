@@ -1,5 +1,5 @@
 import { InvalidRequest } from "@/app/api/(error)";
-import { supabase } from "../server.side.utili";
+import { getSupabaseClient } from "../server.side.utili";
 import { enableCors } from "./cors";
 import { SupabaseClient, User } from "@supabase/supabase-js";
 import { NextRequest, NextResponse } from "next/server";
@@ -8,6 +8,7 @@ export const withDB = (
     handler: (req: NextRequest, supabase: SupabaseClient) => Promise<Response>
 ) => {
     return async (req: NextRequest) => {
+        const supabase = getSupabaseClient();
         const res = new NextResponse();
         enableCors(req, res);
         // 個別のハンドラを実行
