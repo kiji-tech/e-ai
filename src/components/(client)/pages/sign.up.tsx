@@ -26,6 +26,7 @@ const signUp = async (email: string, password: string) => {
 };
 
 const SignUpPage = () => {
+    console.log(process.env.NEXT_PUBLIC_CALLBACK_URL);
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
     const [message, setMessage] = useState("");
@@ -117,7 +118,13 @@ const SignUpPage = () => {
                     onClick: () => {
                         supabase.auth.signInWithOAuth({
                             provider: "google",
-                            options: { redirectTo: process.env.NEXT_PUBLIC_CALLBACK_URL },
+                            options: {
+                                queryParams: {
+                                    access_type: "offline",
+                                    prompt: "consent",
+                                },
+                                redirectTo: process.env.NEXT_PUBLIC_CALLBACK_URL,
+                            },
                         });
                     },
                 }}
