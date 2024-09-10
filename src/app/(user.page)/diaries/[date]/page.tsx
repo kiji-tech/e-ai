@@ -47,7 +47,7 @@ const Page = async (props: Props) => {
               .eq("user_id", session.user.id)
               .eq("delete_flag", false)
         : { data: [] };
-    console.log(correction);
+
     return (
         <DiariesPage
             selectedDate={date}

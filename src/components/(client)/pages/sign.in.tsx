@@ -95,6 +95,25 @@ const SignInPage = () => {
                     </Link>
                 </div>
             </form>
+            <Button
+                options={{
+                    type: "button",
+                    disabled: isLoading,
+                    onClick: () => {
+                        supabase.auth.signInWithOAuth({
+                            provider: "google",
+                            options: {
+                                queryParams: {
+                                    access_type: "offline",
+                                    prompt: "consent",
+                                },
+                                redirectTo: process.env.NEXT_PUBLIC_CALLBACK_URL,
+                            },
+                        });
+                    },
+                }}
+                label="Google"
+            ></Button>
         </div>
     );
 };

@@ -4,6 +4,7 @@ import { SupabaseClient, User } from "@supabase/supabase-js";
 import { NextRequest, NextResponse } from "next/server";
 import { InvalidRequest } from "../(error)";
 import { z } from "zod";
+import { ChatCompletionMessageParam } from "openai/resources/index.mjs";
 const systemContent = `あなたは日本語を英語に翻訳するスペシャリストです｡
 これから､日本語と私なりの英語の文章を記載します｡
 日本語に合うように､私が書いた英語を添削してください｡
@@ -11,7 +12,7 @@ const systemContent = `あなたは日本語を英語に翻訳するスペシャ
 - ネイティブに伝わるように意識してください｡
 - 添削は､文章単位で行ってください｡
 - 返答の説明は日本語､添削は英語で返答してください｡
-- 私が書いた日記に対して､あなたは感想を返してください｡
+- 私が書いた文章に対して､あなたはコミュニケーションをしてください｡
 - 感想は､英語とその日本語を返してください｡
 - 以下のJSONフォーマットで返却してください｡
 
@@ -29,8 +30,8 @@ Result
   resultEn  : string, ･･･ 添削した英文
   points : string, ･･･ 添削対象の英文から､直すべきことを箇条書きにする｡カンマ区切りの文字列とすること｡
   score: number ･･･ 添削対象の英文がネイティブに伝わるかをスコアで示してください｡スコアは､0から50の整数で､示してください｡数字が大きくなるほど､ネイティブに伝わります｡スコアの幅は1です｡
-  commentEn : string ････ 私の日記に対する､あなたの感想(英語)
-  commentJa: string ････ 私の日記に対する､あなたの感想(日本語)
+  commentEn : string ････ 私の文章に対する､あなたの感想(英語)
+  commentJa: string ････ 私の文章に対する､あなたの感想(日本語)
 }
 
 Word
@@ -105,7 +106,37 @@ ${ja}
 ## 英語
 ${en}
 `;
-    const aiResult = await AI.getInstance().run(systemContent, userContent, ResponseType);
+
+    // その日の会話を取得する
+    const { data: corrections, error: correctionsError } = await supabase!
+        .from("corrections")
+        .select("*")
+        .eq("target_date", target_date);
+    if (correctionsError) return new NextResponse(correctionsError.message, { status: 500 });
+
+    // messageの作成
+    let messages = [{ role: "system", content: systemContent }] as ChatCompletionMessageParam[];
+    for (let correction of corrections) {
+        messages.push({
+            role: "user",
+            content: `##日本語
+${correction.ja}
+
+## 英語
+${correction.en}`,
+        });
+        messages.push({
+            role: "assistant",
+            content: `##日本語
+${correction.comment_ja}
+
+## 英語
+${correction.comment_en}`,
+        });
+    }
+    messages.push({ role: "user", content: userContent });
+
+    const aiResult = await AI.getInstance().run(messages, ResponseType);
     console.log(JSON.stringify(aiResult));
     const contents = aiResult.results!.map((result: any) => {
         return {

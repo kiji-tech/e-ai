@@ -14,13 +14,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <html lang="ja">
             <body className={inter.className}>
                 <SupabaseListener />
-                <div className="flex flex-col h-[calc(100vh-68px)]">
-                    <main className="flex-1 container max-w-screen-3xl  mx-auto px-1 pt-5 max-h-[100%-96px]">
-                        {children}
-                    </main>
-                    {/* <footer className="py-4 text-sm text-center bg-gray-300 h-20 fixed bottom-0 w-full">
+                <div className="flex flex-col overflow-scroll">
+                    <main className="container max-w-screen-3xl mx-auto px-1 pt-5">{children}</main>
+                    <footer className="py-4 text-sm text-center bg-gray-300 h-20  w-full">
                         Copyright © 2024 All rights reserved | LibeTech
-                    </footer> */}
+                    </footer>
                 </div>
             </body>
         </html>

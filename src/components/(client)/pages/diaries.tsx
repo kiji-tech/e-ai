@@ -2,7 +2,7 @@
 import { Tables } from "@/lib/database.types";
 import { Button, Input, Textarea } from "../forms";
 import Calendar from "../forms/calendar";
-import { useEffect, useState } from "react";
+import { createRef, useCallback, useEffect, useState } from "react";
 import { z } from "zod";
 import dayjs from "dayjs";
 import { useForm } from "react-hook-form";
@@ -35,6 +35,20 @@ export default function DiariesPage({ selectedDate, words, corrections }: Props)
         defaultValues: { ja: "", en: "" },
         resolver: zodResolver(diarySchema),
     });
+    const chatRef = createRef<HTMLDivElement>();
+    const chatEndRef = createRef<HTMLDivElement>();
+
+    const scrollToBottom = useCallback(() => {
+        chatEndRef!.current!.scrollIntoView({
+            behavior: "instant",
+            block: "start",
+        });
+    }, [chatEndRef]);
+
+    useEffect(() => {
+        chatRef.current!.scrollIntoView({ behavior: "instant", block: "end" });
+        scrollToBottom();
+    }, []);
 
     const diaryHandler = async (schema: DiarySchema) => {
         setIsLoading(true);
@@ -66,12 +80,13 @@ export default function DiariesPage({ selectedDate, words, corrections }: Props)
                     corrections={corrections || []}
                 />
             </div>
-            <div className="w-[calc(100%-32px)] m-4 h-[500px] md:w-[calc(50%-32px)] ">
+            <div className="w-[calc(100%-32px)] m-4 md:w-[calc(50%-32px)] " ref={chatRef}>
                 {/* チャット */}
                 <Chats
                     corrections={corrections.filter(
                         (c) => dayjs(c.target_date).format("YYYY-MM-DD") == selectedDate
                     )}
+                    chatref={chatEndRef}
                 />
                 {/* 日記入力 */}
                 <form onSubmit={handleSubmit(diaryHandler)}>
