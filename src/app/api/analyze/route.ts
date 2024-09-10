@@ -5,9 +5,12 @@ import { NextRequest, NextResponse } from "next/server";
 import { InvalidRequest } from "../(error)";
 import { z } from "zod";
 import { ChatCompletionMessageParam } from "openai/resources/index.mjs";
-const systemContent = `あなたは日本語を英語に翻訳するスペシャリストです｡
+const systemContent = `## 命令
+あなたは日本語を英語に翻訳するスペシャリストです｡
 これから､日本語と私なりの英語の文章を記載します｡
 日本語に合うように､私が書いた英語を添削してください｡
+また､私と会話するように､感想を英語と日本語で返してください｡
+
 以下の条件にそって返却してください
 - ネイティブに伝わるように意識してください｡
 - 添削は､文章単位で行ってください｡
@@ -30,8 +33,8 @@ Result
   resultEn  : string, ･･･ 添削した英文
   points : string, ･･･ 添削対象の英文から､直すべきことを箇条書きにする｡カンマ区切りの文字列とすること｡
   score: number ･･･ 添削対象の英文がネイティブに伝わるかをスコアで示してください｡スコアは､0から50の整数で､示してください｡数字が大きくなるほど､ネイティブに伝わります｡スコアの幅は1です｡
-  commentEn : string ････ 私の文章に対する､あなたの感想(英語)
-  commentJa: string ････ 私の文章に対する､あなたの感想(日本語)
+  commentEn : string ････ 私の文章に対する､あなたの返事(英語)
+  commentJa: string ････ 私の文章に対する､あなたの返事(日本語)
 }
 
 Word
